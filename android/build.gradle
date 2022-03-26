@@ -1,0 +1,85 @@
+group 'spirifoxy.com.github.fmod_player'
+version '1.0-SNAPSHOT'
+
+def fmod_api_root=project.file('../lib').absolutePath
+
+buildscript {
+    ext.kotlin_version = '1.6.10'
+    repositories {
+        google()
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:4.1.0'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+
+rootProject.allprojects {
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+
+android {
+    compileSdkVersion 30
+    ndkVersion '23.1.7779620'
+
+
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+    }
+
+    defaultConfig {
+        minSdkVersion 16
+    }
+
+
+    buildTypes {
+        debug {
+            buildConfigField("String[]", "FMOD_LIBS", "{ \"fmodL\" }")
+            externalNativeBuild {
+                cmake {
+                    arguments '-DFMOD_API_ROOT=' + fmod_api_root,
+                            '-DFMOD_LIB_SUFFIX=L'
+                }
+            }
+        }
+        release {
+            buildConfigField("String[]", "FMOD_LIBS", "{ \"fmod\" }")
+            externalNativeBuild {
+                cmake {
+                    arguments '-DFMOD_API_ROOT=' + fmod_api_root,
+                            '-DFMOD_LIB_SUFFIX='
+                }
+            }
+        }
+    }
+
+    externalNativeBuild {
+        // Encapsulates your CMake build configurations.
+        cmake {
+            // Provides a relative path to your CMake build script.
+            path "CMakeLists.txt"
+        }
+    }
+    compileOptions {
+        sourceCompatibility kotlin_version
+        targetCompatibility kotlin_version
+    }
+
+}
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation files(fmod_api_root + '/core/lib/fmod.jar')
+}
