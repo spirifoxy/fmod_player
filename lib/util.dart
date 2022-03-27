@@ -1,20 +1,9 @@
 import 'dart:ffi';
 
 import 'package:ffi/ffi.dart';
-import 'package:flutter/foundation.dart' as foundation;
 
-/// Debug print function is passed to the cpp code since it's not possible to
-/// output to console natively
-void wrappedPrint(Pointer<Utf8> arg) {
-  if (!foundation.kDebugMode) {
-    return;
-  }
-  print(arg.toDartString());
-}
-
-typedef WrappedPrintNative = Void Function(Pointer<Utf8> a);
-final wrappedPrintPointer =
-    Pointer.fromFunction<WrappedPrintNative>(wrappedPrint);
+typedef DisposeNative = Pointer<Void> Function();
+typedef Dispose = Pointer<Void> Function();
 
 typedef CreateStreamNative = Pointer<Void> Function(
   Pointer<Utf8> path,
@@ -39,8 +28,8 @@ typedef SetVolume = void Function(
 typedef PlayNative = Void Function(Pointer<Void> handle);
 typedef Play = void Function(Pointer<Void> handle);
 
-typedef StopNative = Void Function(Pointer<Void> handle);
-typedef Stop = void Function(Pointer<Void> handle);
+typedef StopNative = Pointer<Void> Function(Pointer<Void> handle);
+typedef Stop = Pointer<Void> Function(Pointer<Void> handle);
 
 typedef PauseNative = Void Function(Pointer<Void> handle);
 typedef Pause = void Function(Pointer<Void> handle);
