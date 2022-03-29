@@ -77,6 +77,10 @@ class FMODSystem {
   }
 
   void dispose() {
+    if (_instance == null) {
+      return;
+    }
+
     _dispose();
     _instance = null;
   }
