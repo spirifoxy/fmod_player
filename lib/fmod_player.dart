@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:ffi';
-import 'dart:io';
 
 import 'package:ffi/ffi.dart';
 import 'package:flutter/foundation.dart' as foundation;
@@ -41,10 +40,6 @@ class FMODSystem {
   }
 
   FMODSystem._() {
-    final DynamicLibrary fmodPlayerLib = Platform.isAndroid
-        ? DynamicLibrary.open('libfmod_player.so')
-        : DynamicLibrary.process();
-
     final _initialize = fmodPlayerLib
         .lookup<NativeFunction<Void Function(Pointer)>>("initialize")
         .asFunction<void Function(Pointer)>();
@@ -61,7 +56,7 @@ class FMODSystem {
     _pause = fmodPlayerLib.lookupFunction<PauseNative, Pause>('pause');
   }
 
-  FMODPlayer createStream({
+  static FMODPlayer createStream({
     required String filePath,
     volume = 1,
     looped = false,
@@ -76,12 +71,12 @@ class FMODSystem {
     return FMODPlayer._(nativePlayerRef, filePath, volume, looped);
   }
 
-  void dispose() {
-    if (_instance == null) {
-      return;
-    }
+  static void dispose() {
+    final call = _instance != null
+        ? FMODSystem()._dispose
+        : fmodPlayerLib.lookupFunction<DisposeNative, Dispose>('dispose');
 
-    _dispose();
+    call();
     _instance = null;
   }
 }

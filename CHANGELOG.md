@@ -1,3 +1,7 @@
+## 0.2.0
+
+* Rework FMODSystem from instance to class methods
+
 ## 0.1.0
 
 * Leaking memory fix

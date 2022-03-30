@@ -57,7 +57,7 @@ class _MyAppState extends State<MyApp> {
                   children: [
                     ElevatedButton(
                         onPressed: () {
-                          nl1 = FMODSystem().createStream(
+                          nl1 = FMODSystem.createStream(
                               filePath: path, looped: true, volume: 0.1);
                         },
                         child: Text("Load")),
@@ -83,7 +83,7 @@ class _MyAppState extends State<MyApp> {
                   children: [
                     ElevatedButton(
                         onPressed: () {
-                          nl2 = FMODSystem().createStream(
+                          nl2 = FMODSystem.createStream(
                               filePath: path, looped: true, volume: 0.1);
                         },
                         child: Text("Load")),
@@ -111,7 +111,7 @@ class _MyAppState extends State<MyApp> {
               children: [
                 const Spacer(),
                 ElevatedButton(
-                    onPressed: () => FMODSystem().dispose(),
+                    onPressed: () => FMODSystem.dispose(),
                     child: Text("Dispose 'em all!")),
                 const Spacer(),
               ],

@@ -1,6 +1,11 @@
 import 'dart:ffi';
+import 'dart:io';
 
 import 'package:ffi/ffi.dart';
+
+final DynamicLibrary fmodPlayerLib = Platform.isAndroid
+    ? DynamicLibrary.open('libfmod_player.so')
+    : DynamicLibrary.process();
 
 typedef DisposeNative = Pointer<Void> Function();
 typedef Dispose = Pointer<Void> Function();
