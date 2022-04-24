@@ -7,6 +7,35 @@
 #include "native_player.hpp"
 
 extern "C" __attribute__((visibility("default"))) __attribute__((used))
+FMOD_RESULT F_CALLBACK myread(void *handle, void *buffer, unsigned int sizebytes, unsigned int *bytesread, void *userdata) {
+    if (!handle) {
+        return FMOD_ERR_INVALID_PARAM;
+    }
+
+    if (bytesread) {
+        // https://www.compuphase.com/mp3/mp3loops.htm
+        int numread;
+        int total = 0;
+        while (sizebytes > 0) {
+          numread = fread(buffer, 1, sizebytes, (FILE *)handle);
+          sizebytes -= numread;
+          total += numread;
+          buffer = (unsigned char*)buffer + numread;
+          // if there is more to read, wrap around and continue
+          if (sizebytes > 0)
+            fseek((FILE *)handle, 0, SEEK_SET);
+        }
+
+        *bytesread = total;
+        if (*bytesread < sizebytes) {
+            return FMOD_ERR_FILE_EOF;
+        }
+    }
+
+    return FMOD_OK;
+}
+
+extern "C" __attribute__((visibility("default"))) __attribute__((used))
 void initialize(void (*printCallback)(char *, bool)) {
     if (logger == nullptr) {
         logger = printCallback;
@@ -28,6 +57,12 @@ void initialize(void (*printCallback)(char *, bool)) {
     }
 
     result = finst->system->init(16, FMOD_INIT_NORMAL, nullptr);
+    if (ERRCHECK(result, error)) {
+        errorLogger(error);
+        return;
+    }
+
+    result = finst->system->setFileSystem(0, 0, myread, 0, 0, 0, 2048);
     if (ERRCHECK(result, error)) {
         errorLogger(error);
         return;
