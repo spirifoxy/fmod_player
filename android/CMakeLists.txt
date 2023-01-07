@@ -8,18 +8,25 @@ set_target_properties(
         fmod PROPERTIES
         IMPORTED_LOCATION ${LIB_FMOD}
         INTERFACE_INCLUDE_DIRECTORIES ${FMOD_API_ROOT}/core/inc
-        )
+)
 
 add_library(
-             fmod_player
+         fmod_player
 
-             # Sets the library as a shared library.
-             SHARED
+         # Sets the library as a shared library.
+         SHARED
 
-             # Provides a relative path to your source file(s).
+         # Provides a relative path to your source file(s).
+         ../ios/Classes/common.c
+         ../ios/Classes/fmod_player.c
+)
 
-             ../ios/Classes/common.cpp
-             ../ios/Classes/fmod_player.cpp
-           )
+target_include_directories(
+        fmod_player
+
+        PRIVATE
+
+        ../lib/core/inc
+)
 
 target_link_libraries( fmod_player fmod )
