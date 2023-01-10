@@ -1,7 +1,8 @@
 group 'spirifoxy.com.github.fmod_player'
 version '1.0-SNAPSHOT'
 
-def fmod_api_root=project.file('../lib').absolutePath
+def fmod_lib_root=project.file('../ios/core/inc').absolutePath
+def fmod_api_root=project.file('../fmod/lib/adnroid').absolutePath
 
 buildscript {
     ext.kotlin_version = '1.6.10'
@@ -11,12 +12,12 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.1.0'
+        classpath 'com.android.tools.build:gradle:7.1.2'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
 
-rootProject.allprojects {
+allprojects {
     repositories {
         google()
         mavenCentral()
@@ -27,9 +28,12 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 
 android {
-    compileSdkVersion 30
-    ndkVersion '23.1.7779620'
+    compileSdkVersion 31
 
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 
     kotlinOptions {
         jvmTarget = '1.8'
@@ -50,6 +54,7 @@ android {
             externalNativeBuild {
                 cmake {
                     arguments '-DFMOD_API_ROOT=' + fmod_api_root,
+                            '-DFMOD_LIB_ROOT=' + fmod_lib_root,
                             '-DFMOD_LIB_SUFFIX=L'
                 }
             }
@@ -59,6 +64,7 @@ android {
             externalNativeBuild {
                 cmake {
                     arguments '-DFMOD_API_ROOT=' + fmod_api_root,
+                            '-DFMOD_LIB_ROOT=' + fmod_lib_root,
                             '-DFMOD_LIB_SUFFIX='
                 }
             }
@@ -81,5 +87,5 @@ android {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
-    implementation files(fmod_api_root + '/core/lib/fmod.jar')
+    implementation files(fmod_lib_root + '/fmod.jar')
 }

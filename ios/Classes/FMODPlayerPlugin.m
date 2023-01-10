@@ -1,4 +1,4 @@
-#import "FMODPlayerPlugin.h.back"
+#import "FmodPlayerPlugin.h"
 #if __has_include(<fmod_player/fmod_player-Swift.h>)
 #import <fmod_player/fmod_player-Swift.h>
 #else
@@ -8,8 +8,8 @@
 #import "fmod_player-Swift.h"
 #endif
 
-@implementation FMODPlayerPlugin
+@implementation FmodPlayerPlugin
 + (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar {
-  [SwiftFMODPlayerPlugin registerWithRegistrar:registrar];
+  [SwiftFmodPlayerPlugin registerWithRegistrar:registrar];
 }
 @end

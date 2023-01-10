@@ -1,4 +1,4 @@
 #import <Flutter/Flutter.h>
 
-@interface FMODPlayerPlugin : NSObject<FlutterPlugin>
+@interface FmodPlayerPlugin : NSObject<FlutterPlugin>
 @end
