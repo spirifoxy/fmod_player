@@ -1,10 +1,10 @@
 import Flutter
 import UIKit
 
-public class SwiftFMODPlayerPlugin: NSObject, FlutterPlugin {
+public class SwiftFmodPlayerPlugin: NSObject, FlutterPlugin {
   public static func register(with registrar: FlutterPluginRegistrar) {
     let channel = FlutterMethodChannel(name: "fmod_player", binaryMessenger: registrar.messenger())
-    let instance = SwiftFMODPlayerPlugin()
+    let instance = SwiftFmodPlayerPlugin()
     registrar.addMethodCallDelegate(instance, channel: channel)
   }
 

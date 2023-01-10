@@ -2,8 +2,11 @@
 #define NATIVEPLAYER_INCLUDED
 
 #include <stdio.h>
-#include <stdbool.h>
 #include <fmod.h>
+
+#define bool int
+#define true 1
+#define false 0
 
 #define MAX_PLAYERS 128
 

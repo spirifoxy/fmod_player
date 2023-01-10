@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include <fmod.h>
+
 #include "common.h"
 #include "native_player.h"
 
@@ -65,7 +67,7 @@ void initialize(void (*printCallback)(char *, bool)) {
     commonLogger((char*)"INFO: native player Initialized");
 }
 
-void setVolume(void *handle, double volume) {
+void setHVolume(void *handle, double volume) {
     FMOD_RESULT result;
     char error[ERR_BUF_SIZE];
 
@@ -90,7 +92,7 @@ void setVolume(void *handle, double volume) {
     }
 }
 
-void pause(void *handle) {
+void pauseH(void *handle) {
     FMOD_RESULT result;
     char error[ERR_BUF_SIZE];
 
@@ -119,7 +121,7 @@ void pause(void *handle) {
     }
 }
 
-void *stop(void *handle) {
+void *stopH(void *handle) {
     FMOD_RESULT result;
     char error[ERR_BUF_SIZE];
 
@@ -131,8 +133,8 @@ void *stop(void *handle) {
     }
 
     if (fp->channel != NULL) {
-        setVolume(fp, 0);
-        pause(fp);
+        setHVolume(fp, 0);
+        pauseH(fp);
         result = FMOD_System_Update(finst->system);
         if (ERRCHECK(result, error)) {
             errorLogger(error);
@@ -185,7 +187,7 @@ void *stop(void *handle) {
     return (void *)fp;
 }
 
-void play(void *handle) {
+void playH(void *handle) {
     FMOD_RESULT result;
     char error[ERR_BUF_SIZE];
     FMOD_CHANNELGROUP *mastergroup;
@@ -222,7 +224,7 @@ void play(void *handle) {
         } else {
             allPlayers[numPlayers++] = fp;
         }
-        setVolume(fp, fp->volume);
+        setHVolume(fp, fp->volume);
     }
 
     result = FMOD_Channel_GetPaused(fp->channel, &isPaused);
@@ -272,7 +274,7 @@ void dispose() {
     char error[ERR_BUF_SIZE];
 
     for (int i = 0; i < numPlayers; i++) {
-        stop(allPlayers[i]);
+        stopH(allPlayers[i]);
     }
 
     numPlayers = 0;
