@@ -29,10 +29,10 @@ class FMODSystem {
 
   late Dispose _dispose;
   late CreateStream _createStream;
-  late SetVolume _setVolume;
-  late Play _play;
-  late Stop _stop;
-  late Pause _pause;
+  late SetVolume _setHVolume;
+  late Play _playH;
+  late Stop _stopH;
+  late Pause _pauseH;
 
   factory FMODSystem() {
     _instance ??= FMODSystem._();
@@ -49,11 +49,11 @@ class FMODSystem {
 
     _createStream = fmodPlayerLib
         .lookupFunction<CreateStreamNative, CreateStream>('createStream');
-    _setVolume =
-        fmodPlayerLib.lookupFunction<SetVolumeNative, SetVolume>('setVolume');
-    _play = fmodPlayerLib.lookupFunction<PlayNative, Play>('play');
-    _stop = fmodPlayerLib.lookupFunction<StopNative, Stop>('stop');
-    _pause = fmodPlayerLib.lookupFunction<PauseNative, Pause>('pause');
+    _setHVolume =
+        fmodPlayerLib.lookupFunction<SetVolumeNative, SetVolume>('setHVolume');
+    _playH = fmodPlayerLib.lookupFunction<PlayNative, Play>('playH');
+    _stopH = fmodPlayerLib.lookupFunction<StopNative, Stop>('stopH');
+    _pauseH = fmodPlayerLib.lookupFunction<PauseNative, Pause>('pauseH');
   }
 
   static FMODPlayer createStream({
@@ -96,18 +96,18 @@ class FMODPlayer {
   );
 
   Future<void> play() async {
-    FMODSystem()._play(_nativePlayerRef);
+    FMODSystem()._playH(_nativePlayerRef);
   }
 
   Future<void> stop() async {
-    _nativePlayerRef = FMODSystem()._stop(_nativePlayerRef);
+    _nativePlayerRef = FMODSystem()._stopH(_nativePlayerRef);
   }
 
   Future<void> pause() async {
-    FMODSystem()._pause(_nativePlayerRef);
+    FMODSystem()._pauseH(_nativePlayerRef);
   }
 
   Future<void> setVolume(double volume) async {
-    FMODSystem()._setVolume(_nativePlayerRef, volume);
+    FMODSystem()._setHVolume(_nativePlayerRef, volume);
   }
 }

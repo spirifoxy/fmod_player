@@ -1,4 +1,4 @@
-#import "FMODPlayerPlugin.h.back"
+#import "FMODPlayerPlugin.h"
 #if __has_include(<fmod_player/fmod_player-Swift.h>)
 #import <fmod_player/fmod_player-Swift.h>
 #else
