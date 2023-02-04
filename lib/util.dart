@@ -10,6 +10,11 @@ final DynamicLibrary fmodPlayerLib = Platform.isAndroid
 typedef DisposeNative = Pointer<Void> Function();
 typedef Dispose = Pointer<Void> Function();
 
+typedef MixerSuspendNative = Pointer<Void> Function();
+typedef MixerSuspend = Pointer<Void> Function();
+typedef MixerResumeNative = Pointer<Void> Function();
+typedef MixerResume = Pointer<Void> Function();
+
 typedef CreateStreamNative = Pointer<Void> Function(
   Pointer<Utf8> path,
   Double volume,
