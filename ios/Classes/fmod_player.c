@@ -52,6 +52,12 @@ void initialize(void (*printCallback)(char *, bool)) {
         return;
     }
 
+    result = FMOD_System_SetDSPBufferSize(finst->system, 1024, 4);
+    if (ERRCHECK(result, error)) {
+        errorLogger(error);
+        return;
+    }
+
     result = FMOD_System_Init(finst->system, 16, FMOD_INIT_NORMAL, NULL);
     if (ERRCHECK(result, error)) {
         errorLogger(error);
@@ -300,4 +306,27 @@ void dispose() {
 
     free(finst);
     finst = NULL;
+}
+
+
+void mixerSuspend() {
+    FMOD_RESULT result;
+    char error[ERR_BUF_SIZE];
+
+    result = FMOD_System_MixerSuspend(finst->system);
+    if (ERRCHECK(result, error)) {
+        errorLogger(error);
+        return;
+    }
+}
+
+void mixerResume() {
+    FMOD_RESULT result;
+    char error[ERR_BUF_SIZE];
+
+    result = FMOD_System_MixerResume(finst->system);
+    if (ERRCHECK(result, error)) {
+        errorLogger(error);
+        return;
+    }
 }

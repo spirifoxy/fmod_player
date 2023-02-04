@@ -28,6 +28,10 @@ class FMODSystem {
   static void Function(String)? errorLoggerCallback;
 
   late Dispose _dispose;
+
+  late MixerSuspend _mixerSuspend;
+  late MixerResume _mixerResume;
+
   late CreateStream _createStream;
   late SetVolume _setHVolume;
   late Play _playH;
@@ -46,6 +50,9 @@ class FMODSystem {
     _initialize(wrappedPrintPointer);
 
     _dispose = fmodPlayerLib.lookupFunction<DisposeNative, Dispose>('dispose');
+
+    _mixerSuspend = fmodPlayerLib.lookupFunction<MixerSuspendNative, MixerSuspend>('mixerSuspend');
+    _mixerResume = fmodPlayerLib.lookupFunction<MixerSuspendNative, MixerSuspend>('mixerResume');
 
     _createStream = fmodPlayerLib
         .lookupFunction<CreateStreamNative, CreateStream>('createStream');
@@ -78,6 +85,22 @@ class FMODSystem {
 
     call();
     _instance = null;
+  }
+
+  static void mixerSuspend() {
+    if (_instance == null) {
+      throw FMODUnitializedException();
+    }
+
+    FMODSystem()._mixerSuspend();
+  }
+
+  static void mixerResume() {
+    if (_instance == null) {
+      throw FMODUnitializedException();
+    }
+
+    FMODSystem()._mixerResume();
   }
 }
 
